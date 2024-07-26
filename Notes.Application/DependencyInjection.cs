@@ -6,18 +6,15 @@ namespace Notes.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            //services.AddMediatR(cfg =>
-            //{
-            //    cfg.RegisterServicesFromAssemblyContaining(typeof(IRequestHandler<>));
-            //});
-            //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly<CreateNoteCommandHandler>());
-            //foreach (var assembly in AppDomain.CurrentDomain. GetAssemblies())
-            //{
-
-            //}
-
-            //services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly, typeof(Entity).Assembly));
-
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterGenericHandlers = true;
+                cfg.MaxGenericTypeParameters = 2;
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(Application.Commands.Create.CreateNoteCommand).Assembly,
+                    typeof(Domain.Models.Entity).Assembly
+                );
+            });
             return services;
         }
     }
