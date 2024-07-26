@@ -19,6 +19,18 @@ namespace Notes.WebApi
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterGenericHandlers = true;
+                cfg.MaxGenericTypeParameters = 2;
+                cfg.RegisterServicesFromAssemblies(
+                typeof(Application.Commands.Create.CreateNoteCommand).Assembly,
+                typeof(Domain.Models.Entity).Assembly,
+                typeof(Persistence.Repository<>).Assembly,
+                typeof(WebApi.Program).Assembly);
+            }
+                );
+
         }
         public void Configure(IApplicationBuilder application, IWebHostEnvironment env)
         {
