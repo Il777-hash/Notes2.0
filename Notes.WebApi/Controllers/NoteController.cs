@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Commands.Create;
+using Notes.Application.Commands.Delete;
 using Notes.Controllers;
+using Notes.Domain.Models;
 
 namespace Notes.WebApi.Controllers
 {
@@ -15,6 +17,13 @@ namespace Notes.WebApi.Controllers
         {
             var id = await Mediator.Send(command);
             return Ok(id);
+        }
+        [HttpPost("delete")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var command = new DeleteGenericCommand<Note>() { Id = id };
+            await Mediator.Send(command);
+            return Ok();
         }
     }
 }
