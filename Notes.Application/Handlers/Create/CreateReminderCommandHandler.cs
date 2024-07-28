@@ -21,7 +21,7 @@ namespace Notes.Application.Handlers.Create
             };
             foreach (var tag in request.Tags)
             {
-                reminder.AddTag(tag);
+                reminder.AddTag(await _repositoryContext.GetOrCreateTag(tag));
             }
             return await _repositoryContext.Create(reminder);
         }

@@ -8,10 +8,10 @@
         public string Body { get; set; }
 
         public IReadOnlyCollection<Tag> Tags => tags;
+        public string[] TagNames => tags.Select(tag => tag.Name).ToArray();
 
-        public void AddTag(string nameTag)
+        public void AddTag(Tag tag)
         {
-            var tag = new Tag { Name = nameTag };
             tags.Add(tag);
         }
     }

@@ -18,7 +18,7 @@ namespace Notes.Application.Handlers.Create
             note.Title = request.Title;
             foreach (var tag in request.Tags)
             {
-                note.AddTag(tag);
+                note.AddTag(await _repositoryContext.GetOrCreateTag(tag));
             }
             return await _repositoryContext.Create(note);
         }
