@@ -1,6 +1,6 @@
 ﻿namespace Notes.Domain.Models
 {
-    public class Item : Entity
+    public abstract class Item : Entity
     {
         internal List<Tag> tags = new List<Tag>();
 
