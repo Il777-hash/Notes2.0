@@ -47,9 +47,9 @@ namespace Notes.Persistence
             return await _dbSet.ToArrayAsync();//todo: проблема с производительностью
         }
 
-        public async Task<Guid> Update(T entity)
+        public async Task<Guid> Update(Guid id, T entity)
         {
-            var dbEntity = await GetOne(entity.Id);
+            var dbEntity = await GetOne(id);
             foreach (var property in entity.GetType().GetProperties().Where(property => property.Name != "Id"))
             {
                 property.SetValue(dbEntity, property.GetValue(entity));
