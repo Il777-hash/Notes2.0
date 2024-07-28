@@ -1,29 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
 using Notes.Application.Commands.Create;
-using Notes.Application.Commands.Delete;
 using Notes.Controllers;
 using Notes.Domain.Models;
 
 namespace Notes.WebApi.Controllers
 {
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("[controller]")]
-
-    public class NoteController : ControllerMain<Note>
+    public class NoteController : ControllerGeneric<Note, CreateNoteCommand>
     {
-        [HttpPost("create")]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateNoteCommand command)
+        public NoteController(IMediator mediator) : base(mediator)
         {
-            var id = await Mediator.Send(command);
-            return Ok(id);
         }
-        [HttpPost("delete")]
-        public async Task<ActionResult> Delete(Guid id)
-        {
-            var command = new DeleteGenericCommand<Note>() { Id = id };
-            await Mediator.Send(command);
-            return Ok();
-        }
+
+        //[HttpPost("create")]
+        //public async Task<ActionResult<Guid>> Create([FromBody] CreateNoteCommand command)
+        //{
+        //    var id = await _mediator.Send(command);
+        //    return Ok(id);
+        //}
     }
 }
