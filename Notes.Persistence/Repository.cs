@@ -11,6 +11,7 @@ namespace Notes.Persistence
     {
         private readonly INotesDbContext _dbContext;
         private readonly DbSet<T> _dbSet;
+        private readonly DbSet<Tag> _tagsDbSet;
 
         public Repository(INotesDbContext dbContext)
         {
@@ -18,6 +19,7 @@ namespace Notes.Persistence
             var dbContextType = _dbContext.GetType();
             var dbSetOfItemProperty = dbContextType.GetProperties().First(property => property.PropertyType == typeof(DbSet<T>));
             _dbSet = (DbSet<T>)dbSetOfItemProperty.GetValue(_dbContext);
+            _tagsDbSet = _dbContext.Tags;
         }
 
         public async Task<Guid> Create(T entity)
@@ -37,7 +39,7 @@ namespace Notes.Persistence
 
         public async Task<T> GetOne(Guid id)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(entity => entity.Id == id, CancellationToken.None);
+            var result = await _dbSet.FindAsync(id);
             if (result is null) throw new NotFoundException(nameof(T), id);
             return result;
         }
@@ -56,6 +58,13 @@ namespace Notes.Persistence
             }
             await _dbContext.SaveChangesAsync(CancellationToken.None);
             return Unit.Value;
+        }
+
+        public async Task<Tag> GetOrCreateTag(string nameTag)
+        {
+            var tag = await _tagsDbSet.FirstOrDefaultAsync(tag => tag.Name == nameTag);
+
+            return tag ?? new Tag() { Name = nameTag };
         }
     }
 }

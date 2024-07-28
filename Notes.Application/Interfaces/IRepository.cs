@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Notes.Domain.Models;
 
 namespace Notes.Application.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Notes.Application.Interfaces
         public Task<Unit> Update(Guid id, T entity);
         public Task<T> GetOne(Guid id);
         public Task<IEnumerable<T>> GetAll();
+        public Task<Tag> GetOrCreateTag(string nameTag);
     }
 }
