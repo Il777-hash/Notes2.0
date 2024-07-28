@@ -15,7 +15,6 @@ namespace Notes.Application.Handlers.Generic
         public async Task Handle(DeleteGenericCommand<T> request, CancellationToken cancellationToken)
         {
             await _repositoryContext.Delete(request.Id);
-            return;
         }
     }
 }

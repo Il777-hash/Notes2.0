@@ -10,7 +10,7 @@ namespace Notes.WebApi.Controllers
     [ApiVersion("1.0")]
     [Route("[controller]")]
 
-    public class NoteController : ControllerMain
+    public class NoteController : ControllerMain<Note>
     {
         [HttpPost("create")]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateNoteCommand command)
