@@ -8,7 +8,7 @@ namespace Notes.Application.Interfaces
         public Task<Guid> Create(T item);
         public Task<Unit> Delete(Guid id);
         public Task<Guid> Update(T item);
-        public Task<T> Get(Guid id);
+        public Task<T> GetOne(Guid id);
         public Task<IEnumerable<T>> GetAll();
     }
 }

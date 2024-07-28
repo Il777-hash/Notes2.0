@@ -49,7 +49,7 @@ namespace Notes.Persistence
 
         public async Task<Guid> Update(T entity)
         {
-            var dbEntity = await Get(entity.Id);
+            var dbEntity = await GetOne(entity.Id);
             foreach (var property in entity.GetType().GetProperties().Where(property => property.Name != "Id"))
             {
                 property.SetValue(dbEntity, property.GetValue(entity));
