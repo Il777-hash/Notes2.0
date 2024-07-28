@@ -17,13 +17,9 @@ namespace Notes.Persistence
             });
             services.AddScoped<INotesDbContext>(provider => provider.GetService<NotesDbContext>());
 
-            //services.AddScoped<IRepository<Note>>(provider => provider.GetService<Repository<Note>>());
-            services.AddScoped<IRepository<Reminder>>(provider => provider.GetService<Repository<Reminder>>());
-            services.AddScoped<IRepository<Tag>>(provider => provider.GetService<Repository<Tag>>());
-            services.AddScoped<IRepository<Item>>(provider => provider.GetService<Repository<Item>>());
-            services.AddScoped<IRepository<Entity>>(provider => provider.GetService<Repository<Entity>>());
-
-            services.AddScoped<IRepository<Note>, Repository<Note>>();//todo: переделать строки выше по этому образу
+            services.AddScoped<IRepository<Reminder>, Repository<Reminder>>();
+            services.AddScoped<IRepository<Tag>, Repository<Tag>>();
+            services.AddScoped<IRepository<Note>, Repository<Note>>();
 
             return services;
         }
