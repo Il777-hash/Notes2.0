@@ -9,8 +9,9 @@
 
         public IReadOnlyCollection<Tag> Tags => tags;
 
-        public void AddTag(Tag tag)
+        public void AddTag(string nameTag)
         {
+            var tag = new Tag { Name = nameTag };
             tags.Add(tag);
         }
     }

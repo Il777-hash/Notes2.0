@@ -10,6 +10,6 @@ namespace Notes.Application.Commands.Create
         [Required]
         public string Title { get; set; }
         public string Body { get; set; }
-        public List<Tag> Tags { get; set; } //todo: использовать название или Guid 
+        public List<string> Tags { get; set; }
     }
 }
