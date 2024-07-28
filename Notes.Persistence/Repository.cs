@@ -29,22 +29,22 @@ namespace Notes.Persistence
 
         public async Task<Unit> Delete(Guid id)
         {
-            var intity = Get(id);
-            _dbSet.Remove(await intity);
+            var intity = await GetOne(id);
+            _dbSet.Remove(intity);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
             return Unit.Value;
         }
 
-        public Task<T> Get(Guid id)
+        public async Task<T> GetOne(Guid id)
         {
-            var result = _dbSet.FirstOrDefaultAsync(entity => entity.Id == id, CancellationToken.None);
+            var result = await _dbSet.FirstOrDefaultAsync(entity => entity.Id == id, CancellationToken.None);
             if (result is null) throw new NotFoundException(nameof(T), id);
             return result;
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbSet.ToListAsync();//todo: проблема с производительностью
+            return await _dbSet.ToArrayAsync();//todo: проблема с производительностью
         }
 
         public async Task<Guid> Update(T entity)
