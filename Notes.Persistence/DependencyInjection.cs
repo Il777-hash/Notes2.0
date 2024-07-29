@@ -18,7 +18,7 @@ namespace Notes.Persistence
             services.AddScoped<INotesDbContext>(provider => provider.GetService<NotesDbContext>());
 
             services.AddScoped<IRepository<Reminder>, Repository<Reminder>>();
-            services.AddScoped<IRepository<Tag>, Repository<Tag>>();
+            services.AddScoped<IRepository<Tag>, TagRepository>();
             services.AddScoped<IRepository<Note>, Repository<Note>>();
 
             return services;

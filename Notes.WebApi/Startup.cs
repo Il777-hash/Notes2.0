@@ -1,5 +1,10 @@
-﻿using Notes.Application;
+﻿using Microsoft.AspNetCore.Mvc.Formatters;
+using Notes.Application;
+using Notes.Domain.Models;
 using Notes.Persistence;
+using Notes.WebApi.DtoModels;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Notes.WebApi
 {
@@ -16,9 +21,23 @@ namespace Notes.WebApi
         {
             services.AddApplication();
             services.AddPersistence(Configuration);
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
+                options.OutputFormatters.Add(new SystemTextJsonOutputFormatter(new JsonSerializerOptions(JsonSerializerDefaults.Web)
+                {
+                    WriteIndented = true,
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles
+                }));
+            });
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.CreateMap<Note, DtoNote>();
+                cfg.CreateMap<Reminder, DtoReminder>();
+                cfg.CreateMap<Tag, DtoTag>();
+            });
         }
         public void Configure(IApplicationBuilder application, IWebHostEnvironment env)
         {

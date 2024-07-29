@@ -9,9 +9,9 @@ namespace Notes.Persistence
     public class Repository<T> : IRepository<T>
         where T : Entity
     {
-        private readonly INotesDbContext _dbContext;
-        private readonly DbSet<T> _dbSet;
-        private readonly DbSet<Tag> _tagsDbSet;
+        protected readonly INotesDbContext _dbContext;
+        protected readonly DbSet<T> _dbSet;
+        protected readonly DbSet<Tag> _tagsDbSet;
 
         public Repository(INotesDbContext dbContext)
         {
@@ -37,16 +37,16 @@ namespace Notes.Persistence
             return Unit.Value;
         }
 
-        public async Task<T> GetOne(Guid id)
+        public virtual async Task<T> GetOne(Guid id)
         {
-            var result = await _dbSet.FindAsync(id);
+            var result = await _dbSet.Include("Tags").FirstOrDefaultAsync(entity => entity.Id == id);
             if (result is null) throw new NotFoundException(nameof(T), id);
             return result;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbSet.ToArrayAsync();//todo: проблема с производительностью
+            return await _dbSet.Include("Tags").ToArrayAsync();//todo: проблема с производительностью
         }
 
         public async Task<Unit> Update(Guid id, T entity)

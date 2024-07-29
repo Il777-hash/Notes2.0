@@ -10,14 +10,16 @@ namespace Notes.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    public abstract class ControllerGeneric<TEntity, TCreateCommand> : ControllerBase
+    public abstract class ControllerGeneric<TEntity, TDtoEntity, TCreateCommand> : ControllerBase
         where TEntity : Entity
     {
         protected IMediator _mediator;
+        protected IMapper _mapper;
 
-        protected ControllerGeneric(IMediator mediator)
+        protected ControllerGeneric(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -42,17 +44,19 @@ namespace Notes.Controllers
         }
 
         [HttpPost("get-all")]
-        public async Task<ActionResult<IEnumerable<TEntity>>> GetAll()
+        public async Task<ActionResult<IEnumerable<TDtoEntity>>> GetAll()
         {
             var command = new GetAllGenericCommand<TEntity>();
-            return Ok(await _mediator.Send(command));
+            var entityes = await _mediator.Send(command);
+            return Ok(_mapper.Map<IEnumerable<TDtoEntity>>(entityes));
         }
 
         [HttpPost("get")]
-        public async Task<ActionResult<TEntity>> GetOne([FromBody] Guid id)
+        public async Task<ActionResult<TDtoEntity>> GetOne([FromBody] Guid id)
         {
             var command = new GetOneGenericCommand<TEntity>() { Id = id };
-            return Ok(await _mediator.Send(command));
+            var entity = await _mediator.Send(command);
+            return Ok(_mapper.Map<TDtoEntity>(entity));
         }
     }
 }
