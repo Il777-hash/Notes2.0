@@ -2,17 +2,16 @@
 {
     public abstract class Item : Entity
     {
-        internal List<Tag> tags = new List<Tag>();
+        public List<Tag> Tags { get; set; } = new List<Tag>();
 
         public string Title { get; set; }
         public string Body { get; set; }
 
-        public IReadOnlyCollection<Tag> Tags => tags;
-        public string[] TagNames => tags.Select(tag => tag.Name).ToArray();
+        public string[] TagNames => Tags.Select(tag => tag.Name).ToArray();
 
         public void AddTag(Tag tag)
         {
-            tags.Add(tag);
+            Tags.Add(tag);
         }
     }
 }

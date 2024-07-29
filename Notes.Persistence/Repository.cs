@@ -39,20 +39,20 @@ namespace Notes.Persistence
 
         public virtual async Task<T> GetOne(Guid id)
         {
-            var result = await _dbSet.Include("Tags").FirstOrDefaultAsync(entity => entity.Id == id);
+            var result = await _dbSet.Include(nameof(Item.Tags)).FirstOrDefaultAsync(entity => entity.Id == id);
             if (result is null) throw new NotFoundException(nameof(T), id);
             return result;
         }
 
         public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbSet.Include("Tags").ToArrayAsync();//todo: проблема с производительностью
+            return await _dbSet.Include(nameof(Item.Tags)).ToArrayAsync();//todo: проблема с производительностью
         }
 
-        public async Task<Unit> Update(Guid id, T entity)
+        public async Task<Unit> Update(T entity)
         {
-            var dbEntity = await GetOne(id);
-            foreach (var property in entity.GetType().GetProperties().Where(property => property.Name != "Id"))
+            var dbEntity = await GetOne(entity.Id);
+            foreach (var property in entity.GetType().GetProperties().Where(property => property.CanWrite && property.Name != "Id"))
             {
                 property.SetValue(dbEntity, property.GetValue(entity));
             }

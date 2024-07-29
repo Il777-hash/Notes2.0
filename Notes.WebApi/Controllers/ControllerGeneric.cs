@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Commands.Delete;
 using Notes.Application.Commands.Get;
@@ -10,7 +11,7 @@ namespace Notes.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    public abstract class ControllerGeneric<TEntity, TDtoEntity, TCreateCommand> : ControllerBase
+    public abstract class ControllerGeneric<TEntity, TDtoEntity, TCreateCommand, TUpdateCommand> : ControllerBase
         where TEntity : Entity
     {
         protected IMediator _mediator;
@@ -37,10 +38,12 @@ namespace Notes.Controllers
             return Ok();
         }
 
+        //todo: release
         [HttpPost("update")]
-        public async Task<ActionResult> Update([FromBody] Guid id, TCreateCommand command)
+        public async Task<ActionResult> Update([FromBody] TUpdateCommand command)
         {
-
+            await _mediator.Send(command);
+            return Ok();
         }
 
         [HttpPost("get-all")]

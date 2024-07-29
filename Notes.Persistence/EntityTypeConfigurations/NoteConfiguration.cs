@@ -10,6 +10,7 @@ namespace Notes.Persistence.EntityTypeConfigurations
         {
             builder.HasKey(note => note.Id);
             builder.HasIndex(note => note.Id);
+            builder.HasMany(note => note.Tags).WithMany(tag => tag.Notes);
         }
     }
 }

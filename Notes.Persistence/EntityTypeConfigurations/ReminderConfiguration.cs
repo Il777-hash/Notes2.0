@@ -10,6 +10,7 @@ namespace Notes.Persistence.EntityTypeConfigurations
         {
             builder.HasKey(reminder => reminder.Id);
             builder.HasIndex(reminder => reminder.Id);
+            builder.HasMany(reminders => reminders.Tags).WithMany(tag => tag.Reminders);
         }
     }
 }
