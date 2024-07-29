@@ -2,6 +2,6 @@
 {
     public class Reminder : Item
     {
-        public DateTime AlertDate { get; set; }
+        public DateTime AlertDateTime { get; set; }
     }
 }

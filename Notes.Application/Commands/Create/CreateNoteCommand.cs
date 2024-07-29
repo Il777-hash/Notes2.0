@@ -3,7 +3,7 @@ using Notes.Domain.Models;
 
 namespace Notes.Application.Commands.Create
 {
-    public class CreateNoteCommand : CreateGenericCommand<Note>, IRequest<Guid>
+    public class CreateNoteCommand : CreateItemCommand<Note>, IRequest<Guid>
     {
 
     }

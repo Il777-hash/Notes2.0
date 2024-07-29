@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Notes.Application.Commands.Create
 {
-    public class CreateGenericCommand<T> : IRequest<Guid>
+    public class CreateItemCommand<T> : IRequest<Guid>
         where T : Item
     {
         [Required]

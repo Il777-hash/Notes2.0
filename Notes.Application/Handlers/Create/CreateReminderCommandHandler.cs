@@ -17,7 +17,7 @@ namespace Notes.Application.Handlers.Create
             {
                 Title = request.Title,
                 Body = request.Body,
-                AlertDate = request.AlertDate
+                AlertDateTime = request.AlertDate
             };
             foreach (var tag in request.Tags)
             {
