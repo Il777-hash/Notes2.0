@@ -18,7 +18,7 @@ namespace Notes.Persistence
             _dbContext = dbContext;
             var dbContextType = _dbContext.GetType();
             var dbSetOfItemProperty = dbContextType.GetProperties().First(property => property.PropertyType == typeof(DbSet<T>));
-            _dbSet = (DbSet<T>)dbSetOfItemProperty.GetValue(_dbContext);
+            _dbSet = dbSetOfItemProperty?.GetValue(_dbContext) as DbSet<T>;
             _tagsDbSet = _dbContext.Tags;
         }
 
@@ -31,16 +31,17 @@ namespace Notes.Persistence
 
         public async Task<Unit> Delete(Guid id)
         {
-            var intity = await GetOne(id);
-            _dbSet.Remove(intity);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            //var intity = await GetOne(id);
+            //_dbSet.Remove(intity);
+            //await _dbContext.SaveChangesAsync(CancellationToken.None);
+            await _dbSet.Where(dbEntity => dbEntity.Id == id).ExecuteDeleteAsync();
             return Unit.Value;
         }
 
         public virtual async Task<T> GetOne(Guid id)
         {
             var result = await _dbSet.Include(nameof(Item.Tags)).FirstOrDefaultAsync(entity => entity.Id == id);
-            if (result is null) throw new NotFoundException(nameof(T), id);
+            if (result is null) throw new NotFoundException(typeof(T).Name, id);
             return result;
         }
 
@@ -52,7 +53,8 @@ namespace Notes.Persistence
         public async Task<Unit> Update(T entity)
         {
             var dbEntity = await GetOne(entity.Id);
-            foreach (var property in entity.GetType().GetProperties().Where(property => property.CanWrite && property.Name != "Id"))
+            IEnumerable<System.Reflection.PropertyInfo> properties = entity.GetType().GetProperties().Where(property => property.CanWrite && property.Name != "Id");
+            foreach (var property in properties)
             {
                 property.SetValue(dbEntity, property.GetValue(entity));
             }

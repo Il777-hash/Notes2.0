@@ -3,6 +3,7 @@ using Notes.Application;
 using Notes.Domain.Models;
 using Notes.Persistence;
 using Notes.WebApi.DtoModels;
+using Notes.WebApi.Middleware;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -51,6 +52,7 @@ namespace Notes.WebApi
                     options.RoutePrefix = string.Empty;
                 });
             }
+            application.UseCustomExceptionHandler();
             application.UseRouting();
             application.UseEndpoints(endpoints =>
             {
