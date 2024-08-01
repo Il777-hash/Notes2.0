@@ -13,10 +13,12 @@ namespace Notes.Application.Handlers.Update
 
         public async Task Handle(UpdateNoteCommand request, CancellationToken cancellationToken)
         {
-            Note note = Activator.CreateInstance<Note>();
-            note.Id = request.Id;
-            note.Body = request.Body;
-            note.Title = request.Title;
+            Note note = new Note //todo: automapper
+            {
+                Id = request.Id,
+                Body = request.Body,
+                Title = request.Title
+            };
             foreach (var tag in request.Tags)
             {
                 note.AddTag(await _repositoryContext.GetOrCreateTag(tag));

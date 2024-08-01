@@ -6,6 +6,6 @@ namespace Notes.Application.Commands.Create
     public class CreateTagCommand : IRequest<Guid>
     {
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }
