@@ -13,12 +13,5 @@ namespace Notes.WebApi.Controllers
         public NoteController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
-
-        //[HttpPost("create")]
-        //public async Task<ActionResult<Guid>> Create([FromBody] CreateNoteCommand command)
-        //{
-        //    var id = await _mediator.Send(command);
-        //    return Ok(id);
-        //}
     }
 }
