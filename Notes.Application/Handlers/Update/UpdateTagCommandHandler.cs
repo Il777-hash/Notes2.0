@@ -15,6 +15,7 @@ namespace Notes.Application.Handlers.Update
         {
             Tag tag = new Tag
             {
+                Id = request.Id,
                 Name = request.Name
             };
             await _repositoryContext.Update(tag);
